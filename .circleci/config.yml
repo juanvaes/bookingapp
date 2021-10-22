@@ -1,0 +1,17 @@
+version: 2.1
+
+jobs:
+  setup-api:
+    docker:
+      - image: 3.7-alpine
+    steps:
+      - checkout
+      - run:
+          name: Setup API Project
+          command: |
+            make setup
+
+workflows:
+  default:
+    jobs:
+      - setup-api
