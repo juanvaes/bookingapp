@@ -9,6 +9,8 @@ jobs:
       - run:
           name: Setup API Project
           command: |
+            ls -la
+            cat Makefile
             make setup
 
 workflows:
