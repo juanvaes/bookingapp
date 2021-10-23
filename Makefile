@@ -9,4 +9,3 @@ test:
 	pytest -s tests/
 run-api:
 	python bookingapp/run.py
-all: install lint test
