@@ -109,8 +109,8 @@ workflows:
           requires: [setup-api]
       - test-api:
           requires: [check-api-lint]
-      #- deploy-infrastructure:
-      #    requires: [test-api]
+      - deploy-infrastructure:
+          requires: [test-api]
       #- configure-infrastructure:
       #    requires: [deploy-infrastructure]
       #- deploy-api:
