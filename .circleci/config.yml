@@ -45,6 +45,7 @@ jobs:
           command: |
             pwd
             ls -la
+            source venv/bin/activate
             make lint
   test-api:
     docker:
