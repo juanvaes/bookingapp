@@ -1,5 +1,19 @@
 version: 2.1
 
+commands:
+  destroy-environment:
+    description: Destroy back-end stack given a workflow ID.
+    parameters:
+      when_to_run:
+        type: string
+        default: "on_fail"
+    steps:
+      - run:
+          name: Destroy backend environment
+          when: << parameters.when_to_run >>
+          command: |
+            aws cloudformation delete-stack --stack-name "bookingapp-backend-${CIRCLE_WORKFLOW_ID:0:7}"
+
 jobs:
   setup-api:
     docker:
@@ -32,10 +46,71 @@ jobs:
             pwd
             ls -la
             make lint
-
+  test-api:
+    docker:
+      - image: cimg/python:3.7.7
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - api-dependencies-{{ checksum "requirements.txt" }}
+            - api-dependencies
+      - run:
+          name: Run Tests
+          command: |
+            pwd
+            ls -la
+            make test
+  deploy-infrastructure:
+    docker:
+      - image: cibuilds/aws:latest
+    steps:
+      - checkout
+      - run:
+          name: Create API Infraestructure
+          command: |
+            aws cloudformation deploy \
+             --template-file .circleci/cloudformation/backend.yml \
+             --tags project=bookingapp-backend-${CIRCLE_WORKFLOW_ID:0:7} \
+             --stack-name "bookingapp-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+             --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
+      - run:
+          name: Save backend IP in memstash
+          command: |
+            BACKEND_IP=$(aws ec2 describe-instances \
+              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --output text)
+            echo "BACKEND_IP=${BACKEND_IP}"
+            curl -H "Content-Type: text/plain" -H "token: f9859dd1-e3a9-4cd5-80d5-eaa113b6f15f" --request PUT --data "$BACKEND_IP" https://api.memstash.io/values/backend-ip-${CIRCLE_WORKFLOW_ID:0:7}
+      - run:
+          name: Add backend ip to inventory.txt
+          command: |
+            BACKEND_IP=$(curl -H "token: f9859dd1-e3a9-4cd5-80d5-eaa113b6f15f" --request GET https://api.memstash.io/values/backend-ip-${CIRCLE_WORKFLOW_ID:0:7})
+            echo ${BACKEND_IP} >> ./.circleci/ansible/inventory.txt
+            cat ./.circleci/ansible/inventory.txt
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./.circleci/ansible/inventory.txt
+            # Here's where you will add some code to rollback on failure
+      - destroy-environment:
+          when_to_run: on_fail
 workflows:
   default:
     jobs:
       - setup-api
       - check-api-lint:
           requires: [setup-api]
+      - test-api:
+          requires: [check-api-lint]
+      #- deploy-infrastructure:
+      #    requires: [test-api]
+      #- configure-infrastructure:
+      #    requires: [deploy-infrastructure]
+      #- deploy-api:
+      #    requires: [deploy-infrastructure]
+      #- smoke-test:
+      #    requires: [deploy-api]
+      #- cleanup:
+      #    requires: [smoke-test]
