@@ -1,5 +1,5 @@
 setup:
-	python -m venv venv2
+	python -m venv venv
 install:
 	pip install --upgrade pip &&\
 		pip install -r requirements.txt
