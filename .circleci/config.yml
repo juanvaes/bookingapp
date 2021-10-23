@@ -62,6 +62,7 @@ jobs:
           command: |
             pwd
             ls -la
+            source venv/bin/activate
             make test
   deploy-infrastructure:
     docker:
