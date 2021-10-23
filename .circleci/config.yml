@@ -62,6 +62,8 @@ jobs:
           command: |
             pwd
             ls -la
+            export PYTHONPATH="${PYTHONPATH}:${PWD}"
+            echo $PYTHONPATH
             source venv/bin/activate
             make test
   deploy-infrastructure:
