@@ -109,13 +109,12 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - 1f:ea:a5:34:45:7f:61:b0:cd:12:f8:f1:ca:d9:53:23
+      - restore_cache:
+          keys:
+            - api-dependencies-{{ checksum "requirements.txt" }}
+            - api-dependencies
       - attach_workspace:
           at: .
-      - run:
-          name: Install dependencies
-          command: |
-            apk add --update ansible
-            ansible --version
       - run:
           name: Configure server
           command: |
