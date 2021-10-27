@@ -121,6 +121,7 @@ jobs:
           command: |
             cat ./.circleci/ansible/inventory.txt
             export ANSIBLE_HOST_KEY_CHECKING=false
+            source venv/bin/activate
             ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/main.yml
       - destroy-environment:
           when_to_run: on_fail  
