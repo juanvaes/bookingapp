@@ -108,8 +108,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints:
-            - 1f:ea:a5:34:45:7f:61:b0:cd:12:f8:f1:ca:d9:53:23
+          fingerprints: [da:4b:06:ea:c6:48:55:73:87:7a:f9:3e:72:05:67:3d]
       - restore_cache:
           keys:
             - api-dependencies-{{ checksum "requirements.txt" }}
