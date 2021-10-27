@@ -1,0 +1,7 @@
+---
+- name: Configure BookingApp Infraestructure
+  hosts: web
+  become: true
+
+  roles:
+    - configure-server

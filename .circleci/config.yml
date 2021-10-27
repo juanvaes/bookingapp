@@ -101,6 +101,29 @@ jobs:
             # Here's where you will add some code to rollback on failure
       - destroy-environment:
           when_to_run: on_fail
+  configure-infrastructure:
+    docker:
+      - image: cimg/python:3.7.7
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - 1f:ea:a5:34:45:7f:61:b0:cd:12:f8:f1:ca:d9:53:23
+      - attach_workspace:
+          at: .
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update ansible
+            ansible --version
+      - run:
+          name: Configure server
+          command: |
+            cat ./.circleci/ansible/inventory.txt
+            export ANSIBLE_HOST_KEY_CHECKING=false
+            ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/main.yml
+      - destroy-environment:
+          when_to_run: on_fail  
 workflows:
   default:
     jobs:
@@ -111,8 +134,8 @@ workflows:
           requires: [check-api-lint]
       - deploy-infrastructure:
           requires: [test-api]
-      #- configure-infrastructure:
-      #    requires: [deploy-infrastructure]
+      - configure-infrastructure:
+          requires: [deploy-infrastructure]
       #- deploy-api:
       #    requires: [deploy-infrastructure]
       #- smoke-test:
