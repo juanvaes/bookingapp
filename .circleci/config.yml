@@ -12,6 +12,9 @@ commands:
           name: Destroy backend environment
           when: << parameters.when_to_run >>
           command: |
+            apk add --update ansible curl rsync openssh nodejs npm openssh-client
+            apk add --no-cache --upgrade bash
+            pip install awscli
             aws cloudformation delete-stack --stack-name "bookingapp-backend-${CIRCLE_WORKFLOW_ID:0:7}"
 
 jobs:
