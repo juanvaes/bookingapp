@@ -147,6 +147,7 @@ jobs:
           command: |
             pwd
             ls -la
+            source venv/bin/activate 
             export ANSIBLE_HOST_KEY_CHECKING=false
             ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/main-deploy-api.yml --user=ubuntu
       - destroy-environment:
