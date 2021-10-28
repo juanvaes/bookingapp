@@ -1,0 +1,11 @@
+---
+- name: Deploying BookingApp API
+  hosts: web
+  become: true
+
+  roles:
+    - deploy-api
+
+  environment:
+    DOCKERHUB_PW: "{{ lookup('env', 'DOCKERHUB_PW') }}"
+    DOCKERHUB_USERNAME: "{{ lookup('env', 'DOCKERHUB_USERNAME') }}"

@@ -121,7 +121,36 @@ jobs:
             cat ./.circleci/ansible/inventory.txt
             export ANSIBLE_HOST_KEY_CHECKING=false
             source venv/bin/activate
-            ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/main.yml --user=ubuntu
+            ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/main-config-server.yml --user=ubuntu
+      - destroy-environment:
+          when_to_run: on_fail  
+  deploy-api:
+    docker:
+      - image: cimg/python:3.7.7
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints: [da:4b:06:ea:c6:48:55:73:87:7a:f9:3e:72:05:67:3d]
+      - restore_cache:
+          keys:
+            - api-dependencies-{{ checksum "requirements.txt" }}
+            - api-dependencies
+      - attach_workspace:
+          at: .
+      - run:
+          name: Install AWS CLI
+          command: |
+            source venv/bin/activate 
+            pip install awscli
+      - run:
+          name: Deploy Backend API
+          command: |
+            pwd
+            ls -la
+            export ANSIBLE_HOST_KEY_CHECKING=false
+            ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/main-deploy-api.yml --user=ubuntu
+      - destroy-environment:
+          when_to_run: on_fail  
 
 workflows:
   default:
@@ -135,8 +164,8 @@ workflows:
           requires: [test-api]
       - configure-infrastructure:
           requires: [deploy-infrastructure]
-      #- deploy-api:
-      #    requires: [deploy-infrastructure]
+      - deploy-api:
+          requires: [configure-infrastructure]
       #- smoke-test:
       #    requires: [deploy-api]
       #- cleanup:

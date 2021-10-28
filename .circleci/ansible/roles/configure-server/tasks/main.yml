@@ -67,3 +67,10 @@
 
   - name: Check kubernetes version
     shell: kubectl version --client
+  
+  - name: Download and Install Minikube
+    shell: curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+  
+  - name: Install Minikube
+    become: yes
+    shell: install minikube-linux-amd64 /usr/local/bin/minikube

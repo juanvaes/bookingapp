@@ -3,12 +3,12 @@ FROM python:3.7.7-stretch
 RUN mkdir -p /app
 WORKDIR /app
 
-COPY bookingapp/ bookingapp/
-COPY requirements.txt requirements.txt
-COPY Makefile Makefile
+COPY bookingapp/ /app/bookingapp/
+COPY requirements.txt /app/requirements.txt
+COPY Makefile /app/Makefile
+COPY run.py /app/run.py
 
 RUN make install
 
 EXPOSE 80
-
-CMD ["make", "run-api"]
+CMD ["python", "run.py"]
