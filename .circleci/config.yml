@@ -154,7 +154,7 @@ jobs:
             ls -la
             tar --exclude='*.pyc' --exclude='__pycache__' -czf bookingapp.tar.gz bookingapp/
             mv bookingapp.tar.gz bookingapp/
-            cd $BASE_PATH
+            cd /home/circleci/bookingapp/
             ls -la
             export ANSIBLE_HOST_KEY_CHECKING=false
             ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/main-deploy-api.yml --user=ubuntu -vvv
