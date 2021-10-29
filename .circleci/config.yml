@@ -147,7 +147,6 @@ jobs:
           command: |
             pwd
             ls -la
-            source venv/bin/activate
             BASE_PATH=${PWD}
             cd ..
             mv project/ bookingapp/
@@ -157,6 +156,7 @@ jobs:
             cd /home/circleci/bookingapp/
             ls -la
             export ANSIBLE_HOST_KEY_CHECKING=false
+            source venv/bin/activate
             ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/main-deploy-api.yml --user=ubuntu -vvv
       - destroy-environment:
           when_to_run: on_fail  
