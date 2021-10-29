@@ -150,9 +150,9 @@ jobs:
             source venv/bin/activate
             BASE_PATH=${PWD}
             cd ..
+            mv bookingapp.tar.gz bookingapp/
             ls -la
             tar --exclude='*.pyc' --exclude='__pycache__' -czf bookingapp.tar.gz bookingapp/
-            mv bookingapp.tar.gz bookingapp/
             cd $BASE_PATH
             ls -la
             export ANSIBLE_HOST_KEY_CHECKING=false
