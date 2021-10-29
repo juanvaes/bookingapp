@@ -1,6 +1,14 @@
 ---
+  - name: Copy compiled files
+    become: true
+    unarchive:
+      src: /root/project/bookingapp.tar.gz
+      dest: /home/ubuntu/
+  
   - name: Build Docker Image
-    shell: docker build -t juanvaes/bookingapp .
+    shell: |
+      cd /home/ubuntu/bookingapp
+      docker build -t juanvaes/bookingapp .
 
   - name: Push Docker Image to Docker Hub
     shell: docker login -u "{{ DOCKERHUB_USERNAME }}" -p "{{ DOCKERHUB_PW }}"
