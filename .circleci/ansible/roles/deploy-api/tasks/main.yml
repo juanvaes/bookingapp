@@ -13,6 +13,7 @@
   - name: Build Docker Image
     shell: |
       cd /home/ubuntu/bookingapp
+      ls -la
       docker build -t juanvaes/bookingapp .
 
   - name: Push Docker Image to Docker Hub
