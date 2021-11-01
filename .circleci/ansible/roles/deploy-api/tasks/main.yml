@@ -2,9 +2,14 @@
   - name: Copy compiled files
     become: true
     unarchive:
-      src: /root/project/bookingapp.tar.gz
+      src:  /home/circleci/project/bookingapp.tar.gz
       dest: /home/ubuntu/
   
+  - name: List directory to debug
+    shell: |
+      pwd
+      ls -la
+
   - name: Build Docker Image
     shell: |
       cd /home/ubuntu/bookingapp
