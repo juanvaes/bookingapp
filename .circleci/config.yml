@@ -150,7 +150,7 @@ jobs:
             cd ..
             echo "Crearting bookingapp/ folder..."
             mkdir bookingapp/
-            cp project/ bookingapp/
+            cp -r project/ bookingapp/
             echo "bookingapp/ folder created."
             ls -la
             echo "Crearting bookingapp tar.gz file..."
