@@ -147,13 +147,17 @@ jobs:
           command: |
             pwd
             ls -la
-            BASE_PATH=${PWD}
             cd ..
-            mv project/ bookingapp/
+            echo "Crearting bookingapp/ folder..."
+            mkdir bookingapp/
+            cp project/ bookingapp/
+            echo "bookingapp/ folder created."
             ls -la
+            echo "Crearting bookingapp tar.gz file..."
             tar --exclude='*.pyc' --exclude='__pycache__' -czf bookingapp.tar.gz bookingapp/
-            mv bookingapp.tar.gz bookingapp/
-            cd /home/circleci/bookingapp/
+            echo "Moving bookingapp.tar.gz file to projec/ folder..."
+            mv bookingapp.tar.gz project/
+            cd /home/circleci/project/
             ls -la
             export ANSIBLE_HOST_KEY_CHECKING=false
             source venv/bin/activate
