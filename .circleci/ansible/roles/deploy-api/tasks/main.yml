@@ -11,6 +11,7 @@
       ls -la
       ls -la /home/ubuntu/
       ls -la /home/ubuntu/bookingapp
+      ls -la /home/ubuntu/bookingapp/project
 
   - name: Build Docker Image
     become: true
