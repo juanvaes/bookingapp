@@ -36,18 +36,18 @@
       echo "Initializing conntrack and socat..."
       apt-get install -y conntrack
       apt-get install -y socat
-      echo "Initializing cluster..."
-      minikube start --driver=none
-      mkdir -p $HOME/.kube
-      cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-      chown $(id -u):$(id -g) $HOME/.kube/config
-      kubectl apply -f $HOME/bookingapp/project/app-deployment.yml
-      echo "List created pods"
-      kubectl get po
-      echo "List created service"
-      kubectl get svc
-      echo "Starting minikube bookingapp service"
-      minikube service bookingapp
+#echo "Initializing cluster..."
+#minikube start --driver=none
+#mkdir -p $HOME/.kube
+#cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+#chown $(id -u):$(id -g) $HOME/.kube/config
+#kubectl apply -f $HOME/bookingapp/project/app-deployment.yml
+#echo "List created pods"
+#kubectl get po
+#echo "List created service"
+#kubectl get svc
+#echo "Starting minikube bookingapp service"
+#minikube service bookingapp
       
 # minikube start --driver=none
 # kubectl cluster-info
