@@ -16,7 +16,7 @@
   - name: Build Docker Image
     become: true
     shell: |
-      cd /home/ubuntu/bookingapp
+      cd /home/ubuntu/bookingapp/project
       ls -la
       docker build -t juanvaes/bookingapp .
 
