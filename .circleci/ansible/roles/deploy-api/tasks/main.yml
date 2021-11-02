@@ -26,3 +26,23 @@
       docker login -u "{{ lookup('env', 'DOCKERHUB_USERNAME') }}" -p "{{ lookup('env', 'DOCKERHUB_PW') }}"
       docker tag bookingapp:latest juanvaes/bookingapp:latest
       docker push juanvaes/bookingapp
+ 
+
+  - name: Run the Docker Hub Container with Kubernetes
+    become: true
+    shell: |
+      cd /home/ubuntu/bookingapp/project
+      echo "Initializing conntrack..."
+      apt-get install -y conntrack
+      echo "Initializing cluster..."
+      minikube start
+      kubectl cluster-info
+      kubectl get nodes
+
+      echo "Running bookingapp"
+      kubectl run bookingapp --image:juanvaes/bookingapp:latest --port=80 --labels app=bookingapp
+      kubectl wait pod/bookingapp --for=condition=Ready --timeout=-1s
+      echo "Listing pods"
+      kubectl get pods
+      echo "Port Forwarding"
+      kubectl port-forward bookingapp 5000:80
