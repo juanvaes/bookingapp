@@ -36,6 +36,9 @@
       echo "Initializing conntrack and socat..."
       apt-get install -y conntrack
       apt-get install -y socat
+      mkdir -p $HOME/.kube
+      sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+      sudo chown $(id -u):$(id -g) $HOME/.kube/config
       echo "Initializing cluster..."
       minikube start --driver=none
       kubectl apply -f app-deployment.yaml
