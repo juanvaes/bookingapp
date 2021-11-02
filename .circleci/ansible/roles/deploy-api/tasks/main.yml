@@ -9,8 +9,11 @@
     shell: |
       pwd
       ls -la
+      ls -la /home/ubuntu/
+      ls -la /home/ubuntu/bookingapp
 
   - name: Build Docker Image
+    become: true
     shell: |
       cd /home/ubuntu/bookingapp
       ls -la
