@@ -22,4 +22,7 @@
       docker build -t juanvaes/bookingapp .
 
   - name: Push Docker Image to Docker Hub
-    shell: docker login -u "{{ lookup('env', 'DOCKERHUB_USERNAME') }}" -p "{{ lookup('env', 'DOCKERHUB_PW') }}"
+    shell: |
+      docker login -u "{{ lookup('env', 'DOCKERHUB_USERNAME') }}" -p "{{ lookup('env', 'DOCKERHUB_PW') }}"
+      docker tag bookingapp:latest juanvaes/bookingapp:latest
+      docker push juanvaes/bookingapp
