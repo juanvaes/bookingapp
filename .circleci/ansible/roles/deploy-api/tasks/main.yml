@@ -35,7 +35,7 @@
       echo "Initializing conntrack..."
       apt-get install -y conntrack
       echo "Initializing cluster..."
-      minikube start
+      minikube start --driver=none
       kubectl cluster-info
       kubectl get nodes
 
