@@ -36,27 +36,13 @@
       echo "Initializing conntrack and socat..."
       apt-get install -y conntrack
       apt-get install -y socat
-#echo "Initializing cluster..."
-#minikube start --driver=none
-#mkdir -p $HOME/.kube
-#cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-#chown $(id -u):$(id -g) $HOME/.kube/config
-#kubectl apply -f $HOME/bookingapp/project/app-deployment.yml
-#echo "List created pods"
-#kubectl get po
-#echo "List created service"
-#kubectl get svc
-#echo "Starting minikube bookingapp service"
-#minikube service bookingapp
-      
-# minikube start --driver=none
-# kubectl cluster-info
-# kubectl get nodes
-
-# echo "Running bookingapp..."
-# kubectl run bookingapp --image=juanvaes/bookingapp:latest --port=80 --labels app=bookingapp
-# sleep 5
-# echo "Listing pods"
-# kubectl get pods
-# echo "Port Forwarding"
-# kubectl port-forward bookingapp 5000:80
+      echo "Initializing cluster..."
+      minikube start --driver=none
+      sleep 10
+      kubectl get nodes
+      kubectl create deployment bookingapp-deployment --image=juanvaes/bookingapp:latest
+      kubectl get deployments
+      export NODE_PORT=$(sudo kubectl get services/bookingapp-deployment -o go-template='{{(index .spec.ports 0).nodePort}}')
+      echo NODE_PORT=$NODE_PORT
+      curl $(sudo minikube ip):$NODE_PORT/index
+      kubectl port-forward --address 0.0.0.0 deployment/bookingapp-deployment 80:80
