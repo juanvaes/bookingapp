@@ -30,6 +30,7 @@
 
   - name: Run the Docker Hub Container with Kubernetes
     become: true
+    ignore_errors: yes
     shell: |
       cd /home/ubuntu/bookingapp/project
       echo "Initializing conntrack..."
@@ -39,9 +40,9 @@
       kubectl cluster-info
       kubectl get nodes
 
-      echo "Running bookingapp"
+      echo "Running bookingapp..."
       kubectl run bookingapp --image=juanvaes/bookingapp:latest --port=80 --labels app=bookingapp
-      kubectl wait pod/bookingapp --for=condition=Ready --timeout=-1s
+      sleep 5
       echo "Listing pods"
       kubectl get pods
       echo "Port Forwarding"
