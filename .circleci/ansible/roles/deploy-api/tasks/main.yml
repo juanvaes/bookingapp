@@ -30,4 +30,4 @@
 
   - name: Run the Docker Hub Container with Kubernetes
     ignore_errors: yes
-    shell: ./run_kubernets.sh
+    shell: ./home/ubuntu/bookingapp/project/run_kubernets.sh
