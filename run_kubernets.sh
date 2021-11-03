@@ -10,12 +10,9 @@ sleep 10
 sudo kubectl get nodes
 sudo kubectl create deployment bookingapp-deployment --image=juanvaes/bookingapp:latest
 sudo kubectl get deployments
-sleep 1
 sudo kubectl expose deployment/bookingapp-deployment --type="NodePort" --port=80
 sudo kubectl describe services/bookingapp-deployment
-sleep 1
 export NODE_PORT=$(sudo kubectl get services/bookingapp-deployment -o go-template='{{(index .spec.ports 0).nodePort}}')
-sleep 1
 echo NODE_PORT=$NODE_PORT
 curl $(sudo minikube ip):$NODE_PORT/index
 sudo kubectl port-forward --address 0.0.0.0 deployment/bookingapp-deployment 80:80
