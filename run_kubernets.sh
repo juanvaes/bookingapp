@@ -11,7 +11,7 @@ sudo kubectl create deployment bookingapp-deployment --image=juanvaes/bookingapp
 sudo kubectl get deployments
 sudo kubectl expose deployment/bookingapp-deployment --type="NodePort" --port=80
 sudo kubectl describe services/bookingapp-deployment
-sudo kubectl wait --for=condition=Ready pod -l app=bookingapp-deployment --timeout=10s
+sudo kubectl wait --for=condition=Ready pod -l app=bookingapp-deployment --timeout=30s
 export NODE_PORT=$(sudo kubectl get services/bookingapp-deployment -o go-template='{{(index .spec.ports 0).nodePort}}')
 echo NODE_PORT=$NODE_PORT
 curl $(sudo minikube ip):$NODE_PORT/index
