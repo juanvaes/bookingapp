@@ -6,7 +6,6 @@ sudo apt-get install -y conntrack
 sudo apt-get install -y socat
 echo "Initializing cluster..."
 sudo minikube start --driver=none
-sleep 10
 sudo kubectl get nodes
 sudo kubectl create deployment bookingapp-deployment --image=juanvaes/bookingapp:latest
 sudo kubectl get deployments
