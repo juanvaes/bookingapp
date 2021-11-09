@@ -36,7 +36,6 @@
 
   - name: Deploying App in Kubernetes
     shell: |
-      sleep 5
       sudo chmod +x ./bookingapp/project/run_kubernets.sh
       ./bookingapp/project/run_kubernets.sh
 
