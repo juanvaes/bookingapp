@@ -13,6 +13,7 @@ sudo kubectl wait node/$NODE_NAME --for=condition=Ready --timeout=-1s
 sudo kubectl get serviceAccounts
 sudo kubectl run bookingapp-pod --image=juanvaes/bookingapp:latest --port=80 --labels app=bookingapp
 echo "Waiting for pod to be ready..."
+sudo kubectl get pods
 sudo kubectl wait pod/bookingapp-pod --for=condition=Ready --timeout=-1s
 sudo kubectl get nodes
 sudo kubectl port-forward --address 0.0.0.0 pod/bookingapp-pod 80:80
