@@ -32,4 +32,7 @@
     ignore_errors: yes
     shell: |
       sudo chmod +x ./bookingapp/project/run_kubernets.sh
+      sudo chmod +x ./bookingapp/project/run_cluster.sh
+      ./bookingapp/project/run_cluster.sh
+      sleep 5
       ./bookingapp/project/run_kubernets.sh
