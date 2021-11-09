@@ -4,9 +4,6 @@ echo "--Running Minikube cluster--"
 echo "----------------------------"
 
 cd /home/ubuntu/bookingapp/project
-echo "Initializing conntrack and socat..."
-sudo apt-get install -y conntrack
-sudo apt-get install -y socat
 echo "Initializing cluster..."
 sudo minikube start --driver=none
 export NODE_NAME=$(sudo kubectl get nodes --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}')

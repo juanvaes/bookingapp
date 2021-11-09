@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: bookingapp
+  name: bookingapp-service
 spec:
   selector:
     app: bookingapp
@@ -29,6 +29,6 @@ spec:
       containers:
         - name: bookingapp
           image: juanvaes/bookingapp:latest
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Never
           ports:
             - containerPort: 80
