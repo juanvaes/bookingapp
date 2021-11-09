@@ -29,11 +29,11 @@ Resources:
   EC2Instance:
     Type: AWS::EC2::Instance
     Properties:
-      InstanceType: t2.medium
+      InstanceType: t2.large
       SecurityGroups:
         - Ref: InstanceSecurityGroup
       KeyName: bookingapp
-      ImageId: ami-0747bdcabd34c712a
+      ImageId: ami-083654bd07b5da81d
       Tags:
         - Key: Name
           Value: !Sub backend-${ID}
