@@ -35,7 +35,8 @@
       ./bookingapp/project/run_cluster.sh
 
   - name: Deploying App in Kubernetes
+    become: yes
     shell: |
-      sudo chmod +x ./bookingapp/project/run_kubernets.sh
+      chmod +x ./bookingapp/project/run_kubernets.sh
       ./bookingapp/project/run_kubernets.sh
 
