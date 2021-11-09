@@ -10,8 +10,8 @@ export NODE_NAME=$(sudo kubectl get nodes --template '{{range .items}}{{.metadat
 echo $NODE_NAME
 echo "Waiting for node to be ready..."
 sudo kubectl wait node/$NODE_NAME --for=condition=Ready --timeout=-1s
-sudo kubectl run bookingapp --image=juanvaes/bookingapp:latest --port=80 --labels app=bookingapp
+sudo kubectl run bookingapp-pod --image=juanvaes/bookingapp:latest --port=80 --labels app=bookingapp
 echo "Waiting for pod to be ready..."
-sudo kubectl wait pod/bookingapp --for=condition=Ready --timeout=-1s
+sudo kubectl wait pod/bookingapp-pod --for=condition=Ready --timeout=-1s
 sudo kubectl get nodes
 sudo kubectl port-forward --address 0.0.0.0 pod/bookingapp 80:80
