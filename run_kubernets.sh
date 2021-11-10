@@ -31,7 +31,7 @@ sudo kubectl get nodes
 
 echo "-> Applying deployment..."
 sudo kubectl apply -f /home/ubuntu/bookingapp/project/app-deployment.yml
-
+sudo kubectl rollout status deployment bookingapp --timeout=30s
 echo "-> Listing Pods"
 sudo kubectl get pods
 export POD_NAME=$(sudo kubectl get pods --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}')
