@@ -29,16 +29,19 @@ echo "-> Node is ready"
 echo "-> Listing Nodes"
 sudo kubectl get nodes
 
-# echo "-> Applying deployment..."
-# sudo kubectl apply -f /home/ubuntu/bookingapp/project/app-deployment.yml
-# #sudo kubectl rollout status deployment bookingapp --timeout=30s
-# python3 /home/ubuntu/bookingapp/project/sleep.py
-# echo "-> Listing Pods"
-# sudo kubectl get pods
-# export POD_NAME=$(sudo kubectl get pods --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}')
-# echo POD_NAME=$POD_NAME
-# sudo kubectl wait --for=condition=Ready pod/$POD_NAME --timeout=-1s
-# echo "Forwarding port in the fu... background..."
-# touch $HOME/nohup.out
-# nohup sudo kubectl port-forward --address 0.0.0.0 pod/$POD_NAME 80:80 > $HOME/nohup.out
+echo "-> Applying deployment..."
+sudo kubectl apply -f /home/ubuntu/bookingapp/project/app-deployment.yml
+#sudo kubectl rollout status deployment bookingapp --timeout=30s
+python3 /home/ubuntu/bookingapp/project/sleep.py
+echo "-> Listing Pods"
+sudo kubectl get pods
+export POD_NAME=$(sudo kubectl get pods --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}')
+echo POD_NAME=$POD_NAME
+sudo kubectl wait --for=condition=Ready pod/$POD_NAME --timeout=-1s
+echo "Forwarding port in the fu... background..."
+sudo kubectl port-forward --address 0.0.0.0 pod/$POD_NAME 80:80 & > /dev/null 2>&1
+echo "Port forwarded"
+jobs -l
+disown %1
+ps aux | grep pod/bookingapp
 #sudo kubectl port-forward --address 0.0.0.0 pod/$POD_NAME 80:80
