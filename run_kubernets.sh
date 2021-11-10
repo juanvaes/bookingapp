@@ -11,11 +11,27 @@ echo "----------------------------"
 #kubectl get pods
 #echo "Waiting for pod to be ready..."
 #kubectl wait pod/bookingapp-pod --for=condition=Ready --timeout=-1s
-echo "-> Docker images"
-sudo docker images
-sudo kubectl apply -f /home/ubuntu/bookingapp/project/app-deployment.yml
+
+
+
+echo "----------------------------"
+echo "--Running Minikube cluster--"
+echo "----------------------------"
+
+cd /home/ubuntu/bookingapp/project
+echo "-> Initializing cluster..."
+sudo minikube start --driver=none
+export NODE_NAME=$(sudo kubectl get nodes --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}')
+echo $NODE_NAME
+echo "-> Waiting for node to be ready..."
+sudo kubectl wait node/$NODE_NAME --for=condition=Ready --timeout=-1s
+echo "-> Node is ready"
 echo "-> Listing Nodes"
 sudo kubectl get nodes
+
+echo "-> Applying deployment..."
+sudo kubectl apply -f /home/ubuntu/bookingapp/project/app-deployment.yml
+
 echo "-> Listing Pods"
 sudo kubectl get pods
 export POD_NAME=$(sudo kubectl get pods --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}')
