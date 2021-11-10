@@ -11,8 +11,12 @@ echo "----------------------------"
 #kubectl get pods
 #echo "Waiting for pod to be ready..."
 #kubectl wait pod/bookingapp-pod --for=condition=Ready --timeout=-1s
+echo "-> Docker images"
+sudo docker images
 sudo kubectl apply -f /home/ubuntu/bookingapp/project/app-deployment.yml
+echo "-> Listing Nodes"
 sudo kubectl get nodes
+echo "-> Listing Pods"
 sudo kubectl get pods
 export POD_NAME=$(sudo kubectl get pods --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}')
 echo POD_NAME=$POD_NAME
