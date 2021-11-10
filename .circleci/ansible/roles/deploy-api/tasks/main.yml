@@ -39,4 +39,9 @@
     shell: |
       sudo chmod +x ./bookingapp/project/run_kubernets.sh
       ./bookingapp/project/run_kubernets.sh
+      echo "Deployment finished"
+  
+  - name: Successful Message
+    shell: |
+      echo "Everything is deployed :)"
 
