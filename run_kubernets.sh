@@ -38,5 +38,7 @@ sudo kubectl get pods
 export POD_NAME=$(sudo kubectl get pods --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}')
 echo POD_NAME=$POD_NAME
 sudo kubectl wait --for=condition=Ready pod/$POD_NAME --timeout=-1s
-echo "Forwarding port..."
-sudo kubectl port-forward --address 0.0.0.0 pod/$POD_NAME 80:80 &
+echo "Forwarding port in the fu... background..."
+touch $HOME/nohup.out
+nohup sudo kubectl port-forward --address 0.0.0.0 pod/$POD_NAME 80:80 > $HOME/nohup.out
+#sudo kubectl port-forward --address 0.0.0.0 pod/$POD_NAME 80:80
