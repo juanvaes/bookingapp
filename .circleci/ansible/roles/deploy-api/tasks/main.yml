@@ -34,12 +34,6 @@
       apt-get install -y conntrack
       apt-get install -y socat
 
-  # - name: Run Minikube Cluster
-  #   ignore_errors: yes
-  #   shell: |
-  #     sudo chmod +x ./bookingapp/project/run_cluster.sh
-  #     ./bookingapp/project/run_cluster.sh
-
   - name: Deploying App in Kubernetes
     ignore_errors: yes
     shell: |
