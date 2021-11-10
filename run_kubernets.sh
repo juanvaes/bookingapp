@@ -39,9 +39,5 @@ export POD_NAME=$(sudo kubectl get pods --template '{{range .items}}{{.metadata.
 echo POD_NAME=$POD_NAME
 sudo kubectl wait --for=condition=Ready pod/$POD_NAME --timeout=-1s
 echo "Forwarding port in the fu... background..."
-sudo kubectl port-forward --address 0.0.0.0 pod/$POD_NAME 80:80 & > /dev/null 2>&1
-echo "Port forwarded"
-jobs -l
-disown %1
-ps aux | grep pod/bookingapp
-#sudo kubectl port-forward --address 0.0.0.0 pod/$POD_NAME 80:80
+#touch $HOME/nohup.out
+#sudo kubectl port-forward --address 0.0.0.0 pod/$POD_NAME 80:80 > $HOME/nohup.out
