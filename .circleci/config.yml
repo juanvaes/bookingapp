@@ -205,6 +205,10 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Install dependencies
+          command: |
+            apt-get install -y curl
+      - run:
           name: Send old workflow id to memstash
           command: |
             OLD_W_ID=$(aws cloudformation \
