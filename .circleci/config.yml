@@ -229,7 +229,8 @@ jobs:
                 if [[ "$CURRENT_W_ID" != "$OLD_W_ID" ]]
                 then
                     echo "$OLD_W_ID != $CURRENT_W_ID: Deleting old stack id"
-                    aws cloudformation delete-stack --stack-name "bookingapp-backend-${OLD_W_ID}"                else
+                    aws cloudformation delete-stack --stack-name "bookingapp-backend-${OLD_W_ID}" 
+                else
                   echo "$OLD_W_ID == $CURRENT_W_ID: Nothing to delete"
                 fi
             fi

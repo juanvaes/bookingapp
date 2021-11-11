@@ -1,5 +1,5 @@
 # bookingapp
-
+You can find all the project requirements in the [`/finalproject`](https://github.com/juanvaes/bookingapp/finalproject) folder
 * Image Repository: https://hub.docker.com/r/juanvaes/bookingapp
 
 Step 1: Scope of the project
@@ -15,6 +15,7 @@ Step 1: Scope of the project
   - cleanup
 * Deployment Type: Blue/Green deployment
 * Application: Simple flask application with a single `/index` route.
+* Application Link: https://github.com/juanvaes/bookingapp/tree/main/bookingapp
 Note: The application is dockerized
 
 Step 2: CI
