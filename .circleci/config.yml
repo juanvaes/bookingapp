@@ -185,10 +185,6 @@ jobs:
       - attach_workspace:
           at: .
       - run:
-          name: Install dependencies
-          command: |
-            apt-get install -y curl
-      - run:
           name: Backend smoke test.
           command: |
             BACKEND_IP=$(curl -H "token: f9859dd1-e3a9-4cd5-80d5-eaa113b6f15f" --request GET https://api.memstash.io/values/backend-ip-${CIRCLE_WORKFLOW_ID:0:7})
