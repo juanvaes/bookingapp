@@ -50,6 +50,11 @@ jobs:
           keys:
             - api-dependencies-{{ checksum "requirements.txt" }}
             - api-dependencies
+      - run: 
+          name: Install make
+          command: |
+            apt install -y make
+          
       - run:
           name: Lint Api
           command: |
@@ -57,6 +62,7 @@ jobs:
             ls -la
             source venv/bin/activate
             pip list
+            make install-hadolint
             make lint
   test-api:
     docker:

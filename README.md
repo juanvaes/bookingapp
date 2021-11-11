@@ -14,7 +14,8 @@ Step 1: Scope of the project
   - smoke-test
   - cleanup
 * Deployment Type: Blue/Green deployment
-* Application: Simple flask application with a single /index route.
+* Application: Simple flask application with a single `/index` route.
+Note: The application is dockerized
 
 Step 2: CI
 ------
@@ -25,10 +26,12 @@ Step 3: Infrastructure
 ------
 * Ansible is used for configuring and deploying a new application into a AWS EC2 instance. There are two main tasks which are `configure-server` and `deploy-api`. 
   - `configure-server` will install docker, kubernetes and minikube
-  - `deploy-api` will create a cluster and will deploy and expose the dockerized flask application.
+  - `deploy-api` will create a kubernetes cluster and will deploy and expose the dockerized flask application.
 * The EC2 instance is deployed with a cloudformation template located in `.circleci/cloudformation/backend.yml`
   - We are creating a security group for the ec2 instance
   - We are attaching the security group to the ec2 instance
+  - The deployment is automatic
 
 Step 4: The Pipeline
 ------
+You can find it at `.circleci/config.yml`
