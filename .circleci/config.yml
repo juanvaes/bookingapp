@@ -53,7 +53,7 @@ jobs:
       - run: 
           name: Install make
           command: |
-            apt install -y make
+            sudo apt install -y make
           
       - run:
           name: Lint Api
