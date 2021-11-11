@@ -41,7 +41,12 @@
       ./bookingapp/project/run_kubernets.sh
       echo "Deployment finished"
   
-  - name: Successful Message
+  - name: Install and configure NGINX
     shell: |
-      echo "Everything is deployed :)"
+      sudo apt-get install -y nginx
+      python3 $HOME/bookingapp/project/replace_node.py
+      sudo cp $HOME/bookingapp/project/nginx.conf /etc/nginx/nginx.conf
+      sudo /etc/init.d/nginx start
+      echo "Make a curl request please"
+
 
