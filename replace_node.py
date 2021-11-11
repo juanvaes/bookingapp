@@ -11,7 +11,7 @@ def find_node_port():
     
 
 def main():
-    project_path = "/home/ubuntu/bookingapp/project/nginx.conf"
+    project_path = "/home/ubuntu/bookingapp/project"
     nginx_path_file = project_path + "/nginx.conf"
     with open(nginx_path_file, "r") as nginx:
         nginx_commands = nginx.read()
