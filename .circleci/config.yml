@@ -178,7 +178,7 @@ jobs:
   smoke-test:
     docker:
       # Lightweight Docker image 
-      - image: python:3.9.0-alpine
+      - image: cimg/python:3.7.7
     steps:
       # Checkout code from git
       - checkout
@@ -201,13 +201,9 @@ jobs:
   cleanup:
     docker:
       # Docker image that supports AWS CLI
-      - image: amazon/aws-cli
+      - image: cibuilds/aws:latest
     steps:
       - checkout
-      - run:
-          name: Install dependencies
-          command: |
-            apt-get install -y curl
       - run:
           name: Send old workflow id to memstash
           command: |
