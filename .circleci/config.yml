@@ -175,7 +175,64 @@ jobs:
             ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/main-deploy-api.yml --user=ubuntu -vvv
       - destroy-environment:
           when_to_run: on_fail  
+  smoke-test:
+    docker:
+      # Lightweight Docker image 
+      - image: python:3.9.0-alpine
+    steps:
+      # Checkout code from git
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Install dependencies
+          command: |
+            apt-get install -y curl
+      - run:
+          name: Backend smoke test.
+          command: |
+            BACKEND_IP=$(curl -H "token: f9859dd1-e3a9-4cd5-80d5-eaa113b6f15f" --request GET https://api.memstash.io/values/backend-ip-${CIRCLE_WORKFLOW_ID:0:7})
+            API_URL="http://${BACKEND_IP}"
+            echo "${API_URL}"
+            curl -s "${API_URL}/index" -v
+      # Here's where you will add some code to rollback on failure  
+      - destroy-environment:
+          when_to_run: on_fail
+  cleanup:
+    docker:
+      # Docker image that supports AWS CLI
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Send old workflow id to memstash
+          command: |
+            OLD_W_ID=$(aws cloudformation \
+              list-exports --query "Exports[].Name[]" \
+              --no-paginate --output text)
+            echo "OLD_W_ID=${OLD_W_ID}"
+            curl -H "Content-Type: text/plain" -H "token: f9859dd1-e3a9-4cd5-80d5-eaa113b6f15f" --request PUT --data "$OLD_W_ID" https://api.memstash.io/values/OLD_W_ID
+      - run:
+          name: Get old workflow ID and remove old stacks and files
+          command: |
+            OLD_W_ID=$(curl -H "token: f9859dd1-e3a9-4cd5-80d5-eaa113b6f15f" --request GET https://api.memstash.io/values/OLD_W_ID)
+            CURRENT_W_ID=${CIRCLE_WORKFLOW_ID:0:7}
+            echo "OLD_W_ID=$OLD_W_ID"
+            echo "CURRENT_W_ID=$CURRENT_W_ID"
 
+            if [ -z "$OLD_W_ID" ]
+            then
+                echo "No OLD_W_ID found, nothing to cleanup."
+            else 
+                if [[ "$CURRENT_W_ID" != "$OLD_W_ID" ]]
+                then
+                    echo "$OLD_W_ID != $CURRENT_W_ID: Deleting old stack id"
+                    aws cloudformation delete-stack --stack-name "bookingapp-backend-${OLD_W_ID}"                else
+                  echo "$OLD_W_ID == $CURRENT_W_ID: Nothing to delete"
+                fi
+            fi
+      - destroy-environment:
+          when_to_run: on_fail
 workflows:
   default:
     jobs:
@@ -190,7 +247,7 @@ workflows:
           requires: [deploy-infrastructure]
       - deploy-api:
           requires: [configure-infrastructure]
-      #- smoke-test:
-      #    requires: [deploy-api]
-      #- cleanup:
-      #    requires: [smoke-test]
+      - smoke-test:
+          requires: [deploy-api]
+      - cleanup:
+          requires: [smoke-test]
