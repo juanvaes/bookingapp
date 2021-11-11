@@ -88,6 +88,14 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Send old workflow id to memstash
+          command: |
+            OLD_W_ID=$(aws cloudformation \
+              list-exports --query "Exports[].Name[]" \
+              --no-paginate --output text)
+            echo "OLD_W_ID=${OLD_W_ID}"
+            curl -H "Content-Type: text/plain" -H "token: f9859dd1-e3a9-4cd5-80d5-eaa113b6f15f" --request PUT --data "$OLD_W_ID" https://api.memstash.io/values/OLD_W_ID
+      - run:
           name: Create API Infraestructure
           command: |
             aws cloudformation deploy \
@@ -206,14 +214,6 @@ jobs:
       - image: cibuilds/aws:latest
     steps:
       - checkout
-      - run:
-          name: Send old workflow id to memstash
-          command: |
-            OLD_W_ID=$(aws cloudformation \
-              list-exports --query "Exports[].Name[]" \
-              --no-paginate --output text)
-            echo "OLD_W_ID=${OLD_W_ID}"
-            curl -H "Content-Type: text/plain" -H "token: f9859dd1-e3a9-4cd5-80d5-eaa113b6f15f" --request PUT --data "$OLD_W_ID" https://api.memstash.io/values/OLD_W_ID
       - run:
           name: Get old workflow ID and remove old stacks and files
           command: |
